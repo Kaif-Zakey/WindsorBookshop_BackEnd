@@ -1,5 +1,7 @@
 package com.kaif.springboot.windsorbookshop.auth;
 
+import com.kaif.springboot.windsorbookshop.email.EmailRequest;
+import com.kaif.springboot.windsorbookshop.email.EmailRequestReset;
 import com.kaif.springboot.windsorbookshop.repo.UserRepository;
 import com.kaif.springboot.windsorbookshop.user.User;
 import lombok.RequiredArgsConstructor;
@@ -73,5 +75,19 @@ public class AuthenticationController {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
+
+
+    // Send reset password link
+    @PostMapping("/forgot-password")
+    public ResponseEntity<AuthenticationResponse> forgotPassword(@RequestBody EmailRequestReset request) {
+        return ResponseEntity.ok(service.sendResetPasswordLink(request.getEmail()));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<AuthenticationResponse> resetPassword(@RequestBody ResetPasswordRequest request) {
+        return ResponseEntity.ok(service.resetPassword(request));
+    }
+
+
 
 }

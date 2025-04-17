@@ -27,4 +27,14 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    public void sendResetPasswordEmail(String toEmail, String resetLink) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("🔐 Reset Your Windsor Bookshop Password");
+        message.setText("We received a request to reset your password.\n\n" +
+                "Click the link below to set a new password:\n" + resetLink + "\n\n" +
+                "If you didn't request a password reset, you can ignore this email.");
+        mailSender.send(message);
+    }
+
 }

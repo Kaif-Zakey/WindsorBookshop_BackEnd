@@ -26,11 +26,16 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private String verificationCode;  // Store the verification code here
     private boolean isEmailVerified = false;  // Flag for email verification
+
+    private String resetToken;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

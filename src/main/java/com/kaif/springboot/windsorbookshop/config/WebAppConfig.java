@@ -19,7 +19,8 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/v1/**")
-                .allowedOrigins("http://localhost:63342", "http://localhost:8080", "http://localhost:8081") // Multiple origins
+                .allowedOrigins("http://localhost:63342", "http://localhost:8080", "http://localhost:8081","https://windsorbookshop.vercel.app","https://windsorbookshop-git-main-kaif-zakis-projects.vercel.app/","http://localhost:5500") // Multiple origins
+
                 .allowCredentials(true)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");

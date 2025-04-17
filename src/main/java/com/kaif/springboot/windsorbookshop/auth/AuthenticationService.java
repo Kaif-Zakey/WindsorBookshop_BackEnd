@@ -5,6 +5,7 @@ import com.kaif.springboot.windsorbookshop.repo.UserRepository;
 import com.kaif.springboot.windsorbookshop.service.EmailService;
 import com.kaif.springboot.windsorbookshop.user.Role;
 import com.kaif.springboot.windsorbookshop.user.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -146,6 +147,8 @@ public class AuthenticationService {
         return String.valueOf(code);
     }
 
+
+
     // Method to delete unverified user
     public boolean deleteUnverifiedUser(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
@@ -160,5 +163,52 @@ public class AuthenticationService {
         }
         return false;
     }
+
+
+    // 1. Send reset link
+    public AuthenticationResponse sendResetPasswordLink(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isEmpty()) {
+            return AuthenticationResponse.builder().message("Email not found.").build();
+        }
+
+        User user = userOptional.get();
+
+        String resetToken = generateVerificationCode(); // You can use UUID instead
+        user.setResetToken(resetToken);
+        userRepository.save(user);
+
+        String resetLink = "http://localhost:63342/front/frontEnd/resetpassword.html?email=" + user.getEmail() + "&token=" + resetToken;
+        emailService.sendResetPasswordEmail(user.getEmail(), resetLink);
+
+        return AuthenticationResponse.builder().message("Reset link sent to email.").build();
+    }
+
+    public AuthenticationResponse resetPassword(ResetPasswordRequest request) {
+        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+
+        if (userOptional.isEmpty()) {
+            return AuthenticationResponse.builder().message("User not found.").build();
+        }
+
+        User user = userOptional.get();
+
+        if (!request.getToken().equals(user.getResetToken())) {
+            return AuthenticationResponse.builder().message("Invalid or expired token.").build();
+        }
+
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            return AuthenticationResponse.builder().message("Password cannot be empty.").build();
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setResetToken(null); // Clear token after use
+        userRepository.save(user);
+
+        return AuthenticationResponse.builder().message("Password has been reset successfully.").build();
+    }
+
+
 
 }

@@ -20,7 +20,7 @@ public class OrderDTO {
     // Constructor
     public OrderDTO(Order order) {
         this.id = order.getId();
-        this.customerName = order.getUser().getUsername();
+        this.customerName = order.getUser().getFirstname();
         this.bookTitle = order.getOrderItems().get(0).getBook().getTitle();
         this.quantity = order.getOrderItems().get(0).getQuantity();
         this.totalPrice = order.getTotalPrice();
