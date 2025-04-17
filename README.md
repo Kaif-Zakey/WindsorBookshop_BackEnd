@@ -56,13 +56,14 @@ Before you begin, ensure you have the following installed on your system:
 - Web Browser: A modern web browser (Chrome, Safari, Edge) to view the frontend application.
 
 ### Backend Setup
-- Navigate to the Backend Directory: Open your terminal or command prompt and navigate to the backend/ folder within your project repository.
+### 1. Navigate to the Backend Directory:
+Open your terminal or command prompt and navigate to the backend/ folder within your project repository.
 
 ```bash
 cd backend
 ```
  
- ### Configure MySQL Database:
+ ### 2. Configure MySQL Database:
 
 - Create a new database for the project (e.g., `windsorbookshop`).
 - Update the database connection properties in the `src/main/resources/application.properties` or `application.yml` file. You will need to provide the following details:
@@ -72,3 +73,38 @@ spring.datasource.url=jdbc:mysql://localhost:3306/WindsorBookShop
 spring.datasource.username=your_mysql_username
 spring.datasource.password=your_mysql_password
 spring.jpa.hibernate.ddl-auto=update
+```
+---
+
+Replace `your_mysql_username` and `your_mysql_password` with your MySQL credentials.
+`spring.jpa.hibernate.ddl-auto=update` will automatically create or update the database schema based on your JPA entities. For production, consider using a more controlled approach for schema management.
+
+---
+
+### 3. Build the Backend Application :
+Use Maven to build the project. Run the following command in the `backend/` directory:  
+```bash
+mvn clean install
+```
+
+
+### 4. Run the Backend Application :
+ After the build is successful, you can run the Spring Boot application using the following Maven command :
+```bash
+mvn clean install
+```
+
+Alternatively, you can find the generated `.jar` file in the `backend/target/` directory (e.g., `windsorbookshop-0.0.1-SNAPSHOT.jar`) and run it using:
+```bash
+java -jar target/windsorbookshop-0.0.1-SNAPSHOT.jar
+```
+
+### 5. Backend API URL :
+ The backend API should be accessible at a base URL, typically `http://localhost:8080/api/v1`
+
+ ## Demonstration Of the WindsorBookshop You Can Watch here:
+ [WindsorBookshop Project](https://openjdk.org/)
+ 
+ 
+ 
+
